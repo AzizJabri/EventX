@@ -98,14 +98,6 @@ An admin-controlled venue booking system built with PHP and MySQL. It allows use
 
 ---
 
-## 🖼️ Favicon
-
-Make sure to include the favicon by placing the following tag in your HTML <head>:
-
-<link rel="icon" href="/assets/images/favicon.png" type="image/png">
-
----
-
 ## ✍️ Future Improvements
 - Email notifications for booking status changes
 - User dashboard to view personal bookings
