@@ -9,7 +9,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
     exit;
 }
 
-$bookings = Booking::all();
+$filters = [
+    'user_id' => $_GET['user_id'] ?? null,
+    'venue_id' => $_GET['venue_id'] ?? null,
+    'status' => $_GET['status'] ?? null,
+];
+$bookings = Booking::filter($filters);
+
 $venues = Venue::all();
 $users = User::all();
 ?>
@@ -70,6 +76,54 @@ $users = User::all();
     <?php if (isset($_SESSION['success'])): ?>
       <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
     <?php endif; ?>
+
+    <form method="GET" class="row g-3 mb-4" id="filterForm">
+      <div class="col-md-3">
+        <label class="form-label">User</label>
+        <select name="user_id" class="form-select">
+          <option value="">All Users</option>
+          <?php foreach ($users as $user): ?>
+            <option value="<?= $user['id'] ?>" <?= isset($_GET['user_id']) && $_GET['user_id'] == $user['id'] ? 'selected' : '' ?>>
+              <?= htmlspecialchars($user['name']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Venue</label>
+        <select name="venue_id" class="form-select">
+          <option value="">All Venues</option>
+          <?php foreach ($venues as $venue): ?>
+            <option value="<?= $venue['id'] ?>" <?= isset($_GET['venue_id']) && $_GET['venue_id'] == $venue['id'] ? 'selected' : '' ?>>
+              <?= htmlspecialchars($venue['name']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+          <option value="">All Statuses</option>
+          <?php foreach (['pending', 'approved', 'rejected'] as $status): ?>
+            <option value="<?= $status ?>" <?= isset($_GET['status']) && $_GET['status'] == $status ? 'selected' : '' ?>>
+              <?= ucfirst($status) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
+      <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-primary me-2" type="submit">
+          <i class="fa-solid fa-filter"></i>
+          Filter</button>
+        <a href="?" class="btn btn-outline-secondary">
+          <i class="fa-solid fa-rotate"></i>
+          Reset</a>
+      </div>
+    </form>
+
 
     <table class="table table-bordered">
       <thead>
@@ -135,8 +189,27 @@ $users = User::all();
             </td>
           </tr>
         <?php endforeach ?>
+        <?php if (empty($bookings)): ?>
+          <tr>
+            <td colspan="5" class="text-center">No bookings found.</td>
+          </tr>
+        <?php endif; ?>
       </tbody>
     </table>
   </div>
+  <?php require_once '../../ui/footer.php'; ?>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('filterForm');
+      const inputs = form.querySelectorAll('select');
+
+      inputs.forEach(input => {
+        input.addEventListener('change', () => {
+          form.submit();
+        });
+      });
+    });
+
+  </script>
 </body>
 </html>

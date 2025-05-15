@@ -9,6 +9,7 @@ $isLoggedIn = $user !== null;
 ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
 <style>
   .navbar-brand {
       font-weight: bold;
@@ -21,7 +22,10 @@ $isLoggedIn = $user !== null;
 </style>
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
   <div class="container">
-    <a class="navbar-brand" href="/">VenueX</a>
+    <a class="navbar-brand" href="/">
+      <img src="/assets/images/logo.png" alt="VenueX Logo" width="40" height="40" class="d-inline-block align-text-top me-2" style="background-color: #000; border-radius: 25%;">
+      EventX
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>

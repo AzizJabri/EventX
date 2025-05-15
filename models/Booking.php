@@ -75,4 +75,30 @@ class Booking {
         $stmt->execute([$userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function filter($filters = []) {
+    $pdo = Database::getConnection();
+    $query = "SELECT * FROM bookings WHERE 1=1";
+    $params = [];
+
+    if (!empty($filters['user_id'])) {
+        $query .= " AND user_id = :user_id";
+        $params['user_id'] = $filters['user_id'];
+    }
+
+    if (!empty($filters['venue_id'])) {
+        $query .= " AND venue_id = :venue_id";
+        $params['venue_id'] = $filters['venue_id'];
+    }
+
+    if (!empty($filters['status'])) {
+        $query .= " AND status = :status";
+        $params['status'] = $filters['status'];
+    }
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }

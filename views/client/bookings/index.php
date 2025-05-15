@@ -30,7 +30,11 @@ $bookings = Booking::forUser($_SESSION['user']['id']);
             <tbody>
                 <?php foreach ($bookings as $booking): ?>
                     <tr>
-                        <td><?= htmlspecialchars($booking['venue_name']) ?></td>
+                        <td>
+                            <a href="/views/client/venues/show.php?id=<?= $booking['venue_id'] ?>">
+                                <?= htmlspecialchars($booking['venue_name']) ?>
+                            </a>
+                        </td>
                         <td><?= htmlspecialchars($booking['location']) ?></td>
                         <td><?= htmlspecialchars($booking['date']) ?></td>
                         <td>

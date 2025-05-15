@@ -8,6 +8,7 @@ session_start();
   <meta charset="UTF-8">
   <title>Register - VenueX</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
   <style>
     body {
       background-color: #f8f9fa;
@@ -69,7 +70,7 @@ session_start();
           <input type="hidden" name="action" value="register">
           <div class="mb-3">
             <label class="form-label">Full Name</label>
-            <input type="text" name="name" class="form-control" placeholder="John Doe" required minlength="3">
+            <input type="text" name="name" class="form-control" placeholder="John Doe" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Email Address</label>
@@ -77,7 +78,7 @@ session_start();
           </div>
           <div class="mb-4">
             <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" placeholder="••••••••" required minlength="6">
+            <input type="password" name="password" class="form-control" placeholder="••••••••" required>
           </div>
           <div class="d-grid">
             <button class="btn btn-success" type="submit">Register</button>
@@ -98,5 +99,52 @@ session_start();
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.querySelector('form').addEventListener('submit', function (e) {
+    const nameInput = this.querySelector('input[name="name"]');
+    const emailInput = this.querySelector('input[name="email"]');
+    const passwordInput = this.querySelector('input[name="password"]');
+
+    let hasError = false;
+
+    this.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
+    [nameInput, emailInput, passwordInput].forEach(input => input.classList.remove('is-invalid'));
+
+  
+    const name = nameInput.value.trim();
+    if (name.length < 3) {
+      showError(nameInput, "Name must be at least 3 characters.");
+      hasError = true;
+    }
+
+  
+    const email = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showError(emailInput, "Please enter a valid email address.");
+      hasError = true;
+    }
+
+    
+    const password = passwordInput.value.trim();
+    if (password.length < 6) {
+      showError(passwordInput, "Password must be at least 6 characters.");
+      hasError = true;
+    }
+
+    if (hasError) {
+      e.preventDefault();
+    }
+
+    function showError(input, message) {
+      input.classList.add('is-invalid');
+      const feedback = document.createElement('div');
+      feedback.className = 'invalid-feedback';
+      feedback.textContent = message;
+      input.parentNode.appendChild(feedback);
+    }
+  });
+</script>
+
 </body>
 </html>

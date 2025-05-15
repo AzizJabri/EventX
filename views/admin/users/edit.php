@@ -12,8 +12,9 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$user = (new User())->find($_GET['id']);
-if (!$user) {
+$userToEdit = (new User())->find($_GET['id']);
+print_r($userToEdit);
+if (!$userToEdit) {
     $_SESSION['error'] = "User not found.";
     header('Location: index.php');
     exit;
@@ -34,23 +35,23 @@ if (!$user) {
 
     <form method="POST" action="/controllers/UserController.php">
       <input type="hidden" name="action" value="update">
-      <input type="hidden" name="id" value="<?= $user['id'] ?>">
+      <input type="hidden" name="id" value="<?= $userToEdit['id'] ?>">
 
       <div class="mb-3">
         <label>Name</label>
-        <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($user['name']) ?>" required>
+        <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($userToEdit['name']) ?>" required>
       </div>
 
       <div class="mb-3">
         <label>Email</label>
-        <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($user['email']) ?>" required>
+        <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($userToEdit['email']) ?>" required>
       </div>
 
       <div class="mb-3">
         <label>Role</label>
         <select name="role" class="form-control" required>
-          <option value="client" <?= $user['role'] === 'client' ? 'selected' : '' ?>>Client</option>
-          <option value="admin" <?= $user['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
+          <option value="client" <?= $userToEdit['role'] === 'client' ? 'selected' : '' ?>>Client</option>
+          <option value="admin" <?= $userToEdit['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
         </select>
       </div>
 

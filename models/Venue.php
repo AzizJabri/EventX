@@ -73,6 +73,50 @@ class Venue {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function getTopRatedVenues($limit = 5) {
+        $conn = Database::getConnection();
+
+        // First: Get venues ordered by average rating
+        $stmt = $conn->prepare("
+            SELECT v.*, AVG(r.rating) AS average_rating, COUNT(r.id) AS review_count
+            FROM venues v
+            JOIN bookings b ON v.id = b.venue_id
+            JOIN reviews r ON b.id = r.booking_id
+            GROUP BY v.id
+            ORDER BY average_rating DESC
+            LIMIT ?
+        ");
+        $stmt->bindValue(1, $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $ratedVenues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $remaining = $limit - count($ratedVenues);
+
+        if ($remaining > 0) {
+            // Second: Fill in with random venues not already included
+            $placeholders = implode(',', array_fill(0, count($ratedVenues), '?'));
+            $query = "
+                SELECT * FROM venues
+                WHERE id NOT IN ($placeholders)
+                ORDER BY RAND()
+                LIMIT $remaining
+            ";
+            $stmt2 = $conn->prepare($query);
+            foreach ($ratedVenues as $i => $venue) {
+                $stmt2->bindValue($i + 1, $venue['id'], PDO::PARAM_INT);
+            }
+            $stmt2->execute();
+            $randomVenues = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+            // Combine rated and random venues
+            $ratedVenues = array_merge($ratedVenues, $randomVenues);
+        }
+
+        return $ratedVenues;
+    }
+
+
+
     public static function updateImage($id, $image_url) {
         $conn = Database::getConnection();
         $stmt = $conn->prepare("UPDATE venues SET image_url = ? WHERE id = ?");
@@ -85,4 +129,41 @@ class Venue {
         $stmt->execute(['%' . $query . '%', '%' . $query . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function filter($filters = [])
+{
+    $pdo = Database::getConnection();
+    $query = "SELECT * FROM venues WHERE 1=1";
+    $params = [];
+
+    if (!empty($filters['name'])) {
+        $query .= " AND name LIKE :name";
+        $params[':name'] = '%' . $filters['name'] . '%';
+    }
+
+    if (!empty($filters['category_id'])) {
+        $query .= " AND category_id = :category_id";
+        $params[':category_id'] = $filters['category_id'];
+    }
+
+    if (!empty($filters['location'])) {
+        $query .= " AND location LIKE :location";
+        $params[':location'] = '%' . $filters['location'] . '%';
+    }
+
+    if (!empty($filters['capacity'])) {
+        $query .= " AND capacity >= :capacity";
+        $params[':capacity'] = $filters['capacity'];
+    }
+
+    if (!empty($filters['price'])) {
+        $query .= " AND price <= :price";
+        $params[':price'] = $filters['price'];
+    }
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }

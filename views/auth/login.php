@@ -17,6 +17,7 @@ if (isset($_SESSION['user'])) {
   <meta charset="UTF-8">
   <title>Login - VenueX</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
   <style>
     body {
       background-color: #f8f9fa;
@@ -103,5 +104,46 @@ if (isset($_SESSION['user'])) {
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.querySelector('form').addEventListener('submit', function (e) {
+    const emailInput = this.querySelector('input[name="email"]');
+    const passwordInput = this.querySelector('input[name="password"]');
+
+    let hasError = false;
+
+    const oldErrors = this.querySelectorAll('.invalid-feedback');
+    oldErrors.forEach(el => el.remove());
+    emailInput.classList.remove('is-invalid');
+    passwordInput.classList.remove('is-invalid');
+
+    
+    const email = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showError(emailInput, "Please enter a valid email.");
+      hasError = true;
+    }
+
+    
+    const password = passwordInput.value.trim();
+    if (password.length < 6) {
+      showError(passwordInput, "Password must be at least 6 characters long.");
+      hasError = true;
+    }
+
+    if (hasError) {
+      e.preventDefault();
+    }
+
+    function showError(input, message) {
+      input.classList.add('is-invalid');
+      const feedback = document.createElement('div');
+      feedback.className = 'invalid-feedback';
+      feedback.textContent = message;
+      input.parentNode.appendChild(feedback);
+    }
+  });
+</script>
+
 </body>
 </html>

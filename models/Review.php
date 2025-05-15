@@ -82,4 +82,16 @@ class Review {
         $stmt->execute([$userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function averageRating($venueId) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("
+            SELECT AVG(r.rating) AS average_rating
+            FROM reviews r
+            JOIN bookings b ON r.booking_id = b.id
+            WHERE b.venue_id = ?
+        ");
+        $stmt->execute([$venueId]);
+        return $stmt->fetchColumn();
+    }
 }
