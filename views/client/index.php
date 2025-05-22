@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
 
 $user = $_SESSION['user'];
 ?>
-
+<title>Dashboard - Venue Booking</title>
 <div class="container mt-5 min-vh-100">
     <?php require_once __DIR__ . '/../ui/messages.php'; ?>
     <h2>Welcome, <?= htmlspecialchars($user['name']) ?> 👋</h2>

@@ -10,7 +10,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'client') {
 
 $bookings = Booking::forUser($_SESSION['user']['id']);
 ?>
-
+<title>Your Bookings - Venue Booking</title>
 <div class="container mt-5">
 <?php require_once __DIR__ . '/../../ui/messages.php'; ?>
     <h2>Your Bookings</h2>

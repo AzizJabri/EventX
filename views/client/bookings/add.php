@@ -17,7 +17,7 @@ if (!$venueId || !$date) {
 
 $venue = Venue::find($venueId); // Fetch venue details
 ?>
-
+<title>Confirm Booking - <?= htmlspecialchars($venue['name']) ?></title>
 <div class="container mt-5">
     <h2>Confirm Booking for <?= htmlspecialchars($venue['name']) ?></h2>
     <div class="card p-4 shadow-sm">

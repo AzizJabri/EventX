@@ -20,7 +20,7 @@ if (!$review || $review['user_id'] != $_SESSION['user']['id']) {
 }
 $venue = Venue::find(Booking::find($review['booking_id'])['venue_id']);
 ?>
-
+<title>Edit Review - Venue Booking</title>
 <style>
     .star-rating {
         display: inline-flex;

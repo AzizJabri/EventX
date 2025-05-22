@@ -22,6 +22,7 @@ $reviews = Review::forVenue($id);
 $canReview = Booking::userCanReview($_SESSION['user']['id'], $id);
 $user = new User();
 ?>
+<title><?= htmlspecialchars($venue['name']) ?> - Venue Booking</title>
 
 <div class="container mt-5">
   <?php require_once __DIR__ . '/../../ui/messages.php'; ?>

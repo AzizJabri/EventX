@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
 
 $venue_id = $_GET['venue_id'] ?? null;
 ?>
-
+<title>Leave a Review - Venue Booking</title>
 <div class="container mt-5">
   <h2>Leave a Review</h2>
   <form action="/controllers/ReviewController.php" method="POST">

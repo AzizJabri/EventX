@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../ui/navbar.php';
 $userId = $_SESSION['user']['id'];
 $reviews = Review::forUser($userId);
 ?>
-
+<title>Your Reviews - Venue Booking</title>
 <div class="container mt-5">
     <h2>Your Reviews</h2>
 

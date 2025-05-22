@@ -6,8 +6,8 @@ require_once '../../ui/navbar.php';
 $venue_id = $_GET['venue_id'] ?? null;
 $venue = Venue::find($venue_id); // Fetch venue details
 
-
 ?>
+<title>Add Review - Venue Booking</title>
 <style>
     .star-rating {
         display: inline-flex;

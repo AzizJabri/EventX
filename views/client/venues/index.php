@@ -21,7 +21,7 @@ $filters = [
 ];
 $venues = Venue::filter($filters);
 ?>
-
+<title>Available Venues - Venue Booking</title>
 <div class="container mt-5">
   <h2 class="mb-4">Available Venues</h2>
 
