@@ -44,8 +44,15 @@ $venue = Venue::find(Booking::find($review['booking_id'])['venue_id']);
 <div class="container mt-5 d-flex justify-content-center">
     <div class="card shadow" style="max-width: 500px; width: 100%;">
         <div class="card-body">
-            <h2 class="card-title mb-4 text-center">Edit Review for <?= htmlspecialchars($venue['name']) ?></h2>
-
+            <h2 class="card-title mb-4 text-center d-flex justify-content-between align-items-center">Edit Review for <?= htmlspecialchars($venue['name']) ?>
+            <form action="/controllers/ReviewController.php" method="post" class="d-inline m-0 my-2">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="id" value="<?= $review['id'] ?>">
+                <button type="submit" class="btn btn-danger btn-sm p-2" onclick="return confirm('Are you sure you want to delete this review?');">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </form>
+            </h2>
             <form action="/controllers/ReviewController.php" method="post">
                 <input type="hidden" name="action" value="update">
                 <input type="hidden" name="id" value="<?= $review['id'] ?>">
@@ -68,16 +75,19 @@ $venue = Venue::find(Booking::find($review['booking_id'])['venue_id']);
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="/views/client/reviews/" class="btn btn-secondary btn-sm">Back</a>
-                    <form action="/controllers/ReviewController.php" method="post" class="d-inline m-0">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="id" value="<?= $review['id'] ?>">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete Review</button>
-                    </form>
-                    <a href="/views/client/venues/show.php?id=<?= $venue['id'] ?>" class="btn btn-secondary btn-sm">View Venue</a>
-                    <button type="submit" class="btn btn-primary btn-sm">Update Review</button>
+                    <a href="/views/client/reviews/" class="btn btn-secondary btn-sm">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back</a>
+
+                    <a href="/views/client/venues/show.php?id=<?= $venue['id'] ?>" class="btn btn-info btn-sm">
+                        <i class="fa-solid fa-eye"></i>
+                    View Venue</a>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-pencil"></i>
+                        Update Review</button>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>
